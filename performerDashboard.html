@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Performer Dashboard - Tech2Connect</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            margin-bottom: 15px;
+        }
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Start -->
+<div class="container-fluid bg-primary">
+    <div class="container">
+        <nav class="navbar navbar-dark navbar-expand-lg py-2 " style="margin-top: -40px;">
+            <a href="index.html" class="navbar">
+                <h1 class="text-dark fw-bold">Task Performer Dashboard</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a href="index.html" class="nav-item nav-link active text-secondary">Home</a>
+                    <a href="contact.html" class="nav-item nav-link text-secondary">Contact</a>
+                    <a href="service.html" class="nav-item nav-link text-secondary">Services</a>
+                    <a href="performTask.html" class="nav-item nav-link">
+                        <button type="button" class="btn btn-dark btn-sm">Perform Task</button>
+                    </a>
+                    <button type="button" class="btn btn-dark btn-sm ms-2" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+        
+        </nav>
+    </div>
+</div>
+<!-- Navbar End -->
+
+<!-- Custom CSS -->
+<style>
+    .navbar-nav .nav-link.active {
+        color: #ffc107 !important;
+    }
+
+    .navbar-nav .btn {
+        margin: 0;
+        padding: 5px 10px;
+        font-size: 0.875rem;
+    }
+
+    .fa-phone-alt,
+    .fa-comment-dots {
+        color: #ffc107;
+    }
+
+    .text-white-50 {
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* Light blue background */
+    .bg-primary {
+        background-color: #bee0ed !important;
+    }
+</style>
+
+    <div class="container">
+        <h1>Confirmed Tasks</h1>
+        <div id="confirmedTaskContainer" class="card-container">
+            <!-- Confirmed tasks will be displayed here -->
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDdUw8WLg8oY5j9JPoZ8nBOQcQKYfxVrVU",
+            authDomain: "fypsignup-6481d.firebaseapp.com",
+            projectId: "fypsignup-6481d",
+            storageBucket: "fypsignup-6481d.appspot.com",
+            messagingSenderId: "246626123583",
+            appId: "1:246626123583:web:93bc9142a05ab0c4795d8a"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Check if a performer is signed in
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in, fetch their confirmed tasks
+                fetchConfirmedTasks(user.uid);
+            } else {
+                // No user is signed in, redirect to sign-in page
+                window.location.href = 'signin.html';
+            }
+        });
+
+        // Function to fetch confirmed tasks for the signed-in performer
+        function fetchConfirmedTasks(userId) {
+            db.collection('performers').doc(userId).collection('confirmedTasks')
+                .onSnapshot(querySnapshot => {
+                    const tasks = [];
+                    querySnapshot.forEach(doc => {
+                        tasks.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderTasks(tasks);
+                });
+        }
+
+        // Function to render tasks on the dashboard
+        function renderTasks(tasks) {
+            const container = document.getElementById('confirmedTaskContainer');
+            container.innerHTML = '';
+            if (tasks.length > 0) {
+                tasks.forEach((task, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    if (task.status === 'done') {
+                        card.classList.add('done');
+                    }
+
+                    const cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+
+                    const title = document.createElement('h5');
+                    title.classList.add('card-title');
+                    title.textContent = task.task;
+
+                    const idPara = document.createElement('p');
+                    idPara.classList.add('card-text');
+                    idPara.textContent = 'Task Id: ' + task.id;
+
+                    const locationPara = document.createElement('p');
+                    locationPara.classList.add('card-text');
+                    locationPara.textContent = 'Location: ' + task.location;
+
+                    const datePara = document.createElement('p');
+                    datePara.classList.add('card-text');
+                    datePara.textContent = 'Date: ' + task.date;
+
+                    const budgetPara = document.createElement('p');
+                    budgetPara.classList.add('card-text');
+                    budgetPara.textContent = 'Budget: ' + task.budget;
+
+                    const phonePara = document.createElement('p');
+                    phonePara.classList.add('card-text');
+                    phonePara.textContent = 'Contact: ' + task.phone;
+
+                    const doneButton = document.createElement('button');
+                    doneButton.classList.add('btn', 'btn-success', 'mr-2');
+                    doneButton.textContent = 'Done';
+                    doneButton.onclick = function () {
+                        // Update task status to 'done' in Firestore
+                        db.collection('performers').doc(auth.currentUser.uid).collection('confirmedTasks').doc(task.id).update({ status: 'done' })
+                            .then(() => {
+                                alert('Task marked as done!');
+                                fetchConfirmedTasks(auth.currentUser.uid);
+                            })
+                            .catch(error => {
+                                console.error('Error marking task as done: ', error);
+                            });
+                    };
+
+                    const cancelButton = document.createElement('button');
+                    cancelButton.classList.add('btn', 'btn-danger', 'mr-2');
+                    cancelButton.textContent = 'Cancel';
+                    cancelButton.onclick = function () {
+                        // Remove task from Firestore
+                        db.collection('performers').doc(auth.currentUser.uid).collection('confirmedTasks').doc(task.id).delete()
+                            .then(() => {
+                                // Reset task status in the main collection
+                                db.collection('Tasks').doc(task.id).update({ status: 'available', performerId: null })
+                                    .then(() => {
+                                        alert('Task cancelled!');
+                                        fetchConfirmedTasks(auth.currentUser.uid);
+                                    });
+                            })
+                            .catch(error => {
+                                console.error('Error cancelling task: ', error);
+                            });
+                    };
+
+                    cardBody.appendChild(title);
+                    cardBody.appendChild(idPara);
+                    cardBody.appendChild(locationPara);
+                    cardBody.appendChild(datePara);
+                    cardBody.appendChild(budgetPara);
+                    cardBody.appendChild(phonePara);
+                    cardBody.appendChild(doneButton);
+                    cardBody.appendChild(cancelButton);
+
+                    // Conditionally render the Provide Account Information button
+                    if (task.status === 'done') {
+                        const provideAccountInfoButton = document.createElement('button');
+                        provideAccountInfoButton.classList.add('btn', 'btn-info');
+                        provideAccountInfoButton.textContent = 'Provide Account Information';
+                        provideAccountInfoButton.onclick = function () {
+                            // Redirect to the performbtn.html page with taskId in URL
+                            window.location.href = 'performbtn.html?taskId=' + task.id;
+                        };
+                        cardBody.appendChild(provideAccountInfoButton);
+                    }
+
+                    card.appendChild(cardBody);
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = '<p>No confirmed tasks.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

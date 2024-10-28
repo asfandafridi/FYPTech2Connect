@@ -26,16 +26,11 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/signup.css">
-
-        <!-- <script type="module" src="register.js" defer></script> -->
-        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-    </head>
-
-    <body>
+        <link href="css/signup.css" rel="stylesheet">
         
+</head>
+<body>
+
 
         <!-- Topbar Start -->
         <div class="container-fluid bg-dark py-2 d-none d-md-flex">
@@ -57,7 +52,7 @@
         </div>
         <!-- Topbar End -->
 
-       <!-- Navbar Start -->
+        <!-- Navbar Start -->
 <div class="container-fluid bg-primary">
     <div class="container">
         <nav class="navbar navbar-dark navbar-expand-lg py-0">
@@ -75,7 +70,7 @@
                     <a href="service.html" class="nav-item nav-link">Services</a>
                 </div>
                 <div class="navbar-nav">
-                    <button id="dashboardBtn" class="btn btn-outline-light btn-sm me-2" onclick="dashBoard()">Dashboard</button>
+                    <button id="dashboardBtn" class="btn btn-outline-light btn-sm me-2" onclick="dashBoard2()">Dashboard</button>
                     <button id="signoutBtn" class="btn btn-outline-light btn-sm" onclick="logout()">Signout</button>
                 </div>
             </div>
@@ -84,29 +79,21 @@
 </div>
 <!-- Navbar End -->
 
- 
- <!-- postTask Start -->
- <div>
-        
-    
-    
-    <fieldset>
 
-        <h1>Post your Task</h1>
-      
-      <legend><span class="number">1</span></legend>
-      
-      <label for="task">What do you need done? provide are the details:</label>
-      <input type="text" id="task" name="text">
-      
-      <label for="location">Where do you need this done? </label>
-<select id="location" name="location">
-    <option value="all">All Locations</option>
-    <option value="peshawar">Peshawar</option>
-    <option value="lahore">Lahore</option>
-    <option value="karachi">Karachi</option>
-    <option value="multan">Multan</option>
-    <option value="faisalabad">Faisalabad</option>
+        <h1>Available Tasks</h1>
+    
+        <!-- Dropdown filter button for location -->
+        
+        <label for="locationFilter">Filter by Location:</label>
+        <select id="locationFilter">
+            <option value="all">All Locations</option>
+            <option value="bro">bro</option>
+            <option value="peshawar">Peshawar</option>
+            <option value="Lahore">Lahore</option>
+            <option value="karachi">Karachi</option>
+            <option value="multan">Multan</option>
+            <option value="islamabad">Islamabad</option>
+            <option value="faisalabad">Faisalabad</option>
     <option value="haiderabad">HaiderAbad</option>
     <option value="sukkur">Sukkur</option>
     <option value="quetta">Quetta</option>
@@ -124,38 +111,37 @@
     <option value="gujrat">Gujrat</option>
     <option value="larkana">Larkana</option>
     <option value="rahimyarkhan">RahimyarKhan</option>
-   
-    <!-- Add more options for other cities as needed -->
-</select>
 
-      <label for="date">When do you need this done? </label>
-      <input type="date" id="date" name="user_name">
-      
-      <label for="budget">what is your budget? </label>
-      <input type="number" id="budget" name="budget" placeholder="Rs">
-      
-      <label for="phone">Contact number:</label>
-      <input type="tel" id="phone" name="phone" placeholder="XXXX-XXXXXXX" required maxlength="12" >
-
+            <!-- Add more options for other locations as needed -->
+        </select>
         
+        <!-- Container for displaying tasks -->
      
-      <button  id="submitData" onclick="postTask()">Submit</button>
+       <!-- <div id="cardContainer1"></div> -->
+
+       
+      
+       
+
+    <div id="cardContainer1" class="card-container">
+       
+    </div>
+
     
-    </fieldset>
-</div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          
+        </div>
+    </div>
 
+    
 
-<script>
-document.getElementById('phone').addEventListener('input', function (event) {
-    let value = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
-    if (value.length > 4) {
-        value = value.slice(0, 4) + '-' + value.slice(4);
-    }
-    event.target.value = value;
-});
-</script>
-
-<script src="register.js"></script>
-  </body>
-<!-- Post task End -->
-
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="performTask.js"></script>
+    <script src="register.js"></script>
+    
+    
+</body>
+</html>

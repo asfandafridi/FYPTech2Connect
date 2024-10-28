@@ -9,13 +9,13 @@
     color: #384047;
   }
   
-  form {
+  /* .formm {
     max-width: 300px;
     margin: 10px auto;
     padding: 10px 20px;
     background: #f4f7f8;
     border-radius: 8px;
-  }
+  } */
   
   h1 {
     margin: 0 0 30px 0;
@@ -77,6 +77,11 @@
   fieldset {
     margin-bottom: 30px;
     border: none;
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background: #f4f7f8;
+    border-radius: 8px;
   }
   
   legend {
@@ -107,6 +112,79 @@
     text-shadow: 0 1px 0 rgba(255,255,255,0.2);
     border-radius: 100%;
   }
+
+  /* Perform task */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    border: none;
+    max-width: 800px;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background: #f4f7f8;
+    border-radius: 8px;
+}
+
+.card {
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #8a97a0;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    margin-bottom: 5px;
+}
+
+.button {
+  background-color: #3ac162;
+    margin-top: 10px;
+}
+
+
+/* Modal styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Position the modal */
+  z-index: 1; /* Make sure it appears on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scrolling if needed */
+  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, adjust as needed */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  animation-name: modalopen;
+  animation-duration: 0.4s;
+}
+
+
+/* Modal animation */
+@keyframes modalopen {
+  from {opacity: 0}
+  to {opacity: 1}
+}
   
   @media screen and (min-width: 480px) {
   

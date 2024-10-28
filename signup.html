@@ -27,6 +27,10 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <link rel="stylesheet" href="css/signup.css">
+        <!-- <script type="module" src="register.js" defer></script> -->
+        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
     </head>
 
     <body>
@@ -96,35 +100,91 @@
         <!-- Navbar End -->
  
  <!-- signup Start -->
- <form action="index.html" method="post">
+ <div id="formm">
         
     <h1>Sign Up</h1>
     
     <fieldset>
       
       <legend><span class="number">1</span> Your basic info</legend>
-      
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="user_name">
-      
+     
       <label for="mail">Email:</label>
-      <input type="email" id="mail" name="user_email">
+      <input type="email" id="email" name="user_email">
       
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="user_password">
-      
-      <label for="password">Contact number:</label>
-      <input type="password" id="password" name="user_password">
-      
-    
-    </fieldset>
-    
-    
-      
-    <button type="submit">Sign Up</button>
-    
-  </form>
+      <label for="password">Enter your password:</label>
+        <input type="password" id="password" name="user_password" required>
 
+      <label for="cnic">Enter your CNIC:</label>
+        <input type="text" id="cnic" name="user_cnic" placeholder="XXXXX-XXXXXXX-X" required maxlength="15">
+          
+        <label for="contact">Enter your contact number:</label>
+        <input type="text" id="contact" name="user_number" placeholder="XXXX-XXXXXXX" required maxlength="12">
+        
+      <label for="text">Address:</label>
+      <input type="text" id="address" name="user_address">
+
+      <button id ="submit" onclick="signup()">Sign Up</button>
+       <!-- sign in option -->
+       <p>Already have an account ?</p>
+       <span>
+           <a href="signin.html">sign in </a>
+       </span>
+    </fieldset>
+    </div>
+
+    <script>
+        document.getElementById('cnic').addEventListener('input', function (event) {
+            let value = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+            if (value.length > 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5);
+            }
+            if (value.length > 13) {
+                value = value.slice(0, 13) + '-' + value.slice(13, 14);
+            }
+            event.target.value = value;
+        });
+
+        document.getElementById('contact').addEventListener('input', function (event) {
+            let value = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+            if (value.length > 4) {
+                value = value.slice(0, 4) + '-' + value.slice(4);
+            }
+            event.target.value = value;
+        });
+
+        document.getElementById('userForm').addEventListener('submit', function (event) {
+            const cnic = document.getElementById('cnic').value;
+            const contact = document.getElementById('contact').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            const cnicPattern = /^\d{5}-\d{7}-\d{1}$/;
+            const contactPattern = /^\d{4}-\d{7}$/;
+            let isValid = true;
+            let errorMessage = '';
+
+            if (!cnicPattern.test(cnic)) {
+                errorMessage += 'Please enter a valid CNIC in the format XXXXX-XXXXXXX-X.\n';
+                isValid = false;
+            }
+
+            if (!contactPattern.test(contact)) {
+                errorMessage += 'Please enter a valid contact number in the format XXXX-XXXXXXX.\n';
+                isValid = false;
+            }
+
+            if (password !== confirmPassword) {
+                errorMessage += 'Passwords do not match.\n';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert(errorMessage);
+                event.preventDefault();
+            }
+        });
+    </script>
+  <script src="register.js"></script>
   </body>
 <!-- signup End -->
 

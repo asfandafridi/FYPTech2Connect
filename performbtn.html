@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/signup.css">
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <fieldset>
+        <h1>Enter your account details</h1>
+        <legend><span class="number">1</span></legend>
+
+        <label for="accountDetails">Enter your account number</label>
+        <input type="text" id="accountDetails" name="accountDetails" required maxlength="13">
+      
+        <label for="type">What is the type of your account</label>
+        <select id="type" name="type">
+            <option value="jazzcash">JazzCash</option>
+            <option value="easypaisa">Easypaisa</option>
+            <option value="ABL">Allied Bank Limited</option>
+            <option value="HBL">Habib Bank Limited</option>
+            <option value="nayapay">Nayapay</option>
+            <option value="sadapay">Sadapay</option>
+        </select>
+
+        <label for="cnic">Enter your CNIC:</label>
+        <input type="text" id="cnic" name="cnic" placeholder="XXXXX-XXXXXXX-X" required maxlength="15">
+
+        <label for="contact">Enter your contact number:</label>
+        <input type="text" id="contact" name="contact" placeholder="XXXX-XXXXXXX" required maxlength="12">
+
+        <label for="address">Enter your address</label>
+        <input type="text" id="address" name="address">
+  
+        <button id="submitData" onclick="submitBtn()">Submit</button>
+    </fieldset>
+
+    <script>
+        document.getElementById('cnic').addEventListener('input', function (event) {
+            let value = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+            if (value.length > 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5);
+            }
+            if (value.length > 13) {
+                value = value.slice(0, 13) + '-' + value.slice(13, 14);
+            }
+            event.target.value = value;
+        });
+
+        document.getElementById('contact').addEventListener('input', function (event) {
+            let value = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+            if (value.length > 4) {
+                value = value.slice(0, 4) + '-' + value.slice(4);
+            }
+            event.target.value = value;
+        });
+    </script> 
+
+    <script src="performbtn.js"></script>
+</body>
+</html>
