@@ -73,14 +73,14 @@ const auth = firebaseApp.auth();
     // Signed in
     console.log("Document successfully written!");
     alert("signed in");
-    window.location.href = "otp.html";
+    window.location.href = "index.html";
 
     if (email === "asfandafridi97@gmail.com" && password === "asdfgh") {
       // Redirect to admin dashboard
       window.location.href = "adminDashboard.html";
   } else {
       // Redirect to regular user dashboard
-      window.location.href = "otp.html";
+      window.location.href = "index.html";
   }
 
     
@@ -214,9 +214,9 @@ db.collection("Users").doc(uid).collection("Performer").add({
  
 });
 }
-else{
- window.location.href = "signin.html";
-}
+// else{
+//  window.location.href = "signin.html";
+// }
  });
 }
 //Account Detail  End
@@ -237,7 +237,7 @@ function GetAllDataRealtime() {
       });
     } else {
       // User is not signed in, redirect to sign-in page
-      window.location.href = "signin.html";
+      //window.location.href = "signin.html";
     }
   });
 }
